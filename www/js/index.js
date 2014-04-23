@@ -45,5 +45,18 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
-};
+    },
+
+    updateNurseList: function() {
+  alert ("reached function");
+ //$.getJSON ("nursesListing.json",
+   //     function (data) {            alert(“Got Data”);
+   //     }
+   //     );
+  
+      }
+}
+
+
+
+
