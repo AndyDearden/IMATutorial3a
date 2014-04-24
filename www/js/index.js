@@ -26,7 +26,7 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        $(document).addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
@@ -47,14 +47,52 @@ var app = {
         console.log('Received Event: ' + id);
     },
 
+
     updateNurseList: function() {
-  alert ("reached function");
- //$.getJSON ("nursesListing.json",
-   //     function (data) {            alert(“Got Data”);
-   //     }
-   //     );
+
+           $.ajax ({
+              dataType: "html",
+              url: "http://localhost/~student/IMATutorial3a/www/nursesListing.json",
+    
+              success: function (data) {
+              var nurses = $.parseJSON(data); // convert the response to a JSON object
+              alert ("got the data successfully");
+              app.nurses_data = nurses;
+
+              for (index = 0; index < nurses.length; ++index) {
+// Maybe you could subnavigate the specialisms
+// list here and add a "tag" for each specialism
+                  $("#NurseList").append ("<li " +
+"onClick=\"javascript:app.showNurseDetails("+nurses[index].id+");\">"+
   
+                  "<h3>"+
+                  nurses[index].forename+", "+ nurses[index].surname + "</h3><p>Grade"+
+                  nurses[index].grade+"</p></a></li>");
+                  }
+
+              }
+            });
+
+      //        $("#NurseList").listview ("refresh");
+      },
+
+      showNurseDetails: function(nurse_id) {
+        alert("Show nurse details "+nurse_id);
+        var nurse_to_show
+          for (index = 0; index < app.nurses_data.length; ++index) {
+            if ( app.nurses_data[index].id == nurse_id ) {
+               nurse_to_show = app.nurses_data[index]
+            }
+          }
+        if ( nurse_to_show != null ) {
+            $("#NurseDetailsHeader").html("<h1>"+ nurse_to_show.surname+", "+nurse_to_show.forename + "</h1>");
+            $("#NurseDetailsContent").html("Grade "+nurse_to_show.grade);
+        }
+        $.mobile.pageContainer.pagecontainer("change", "#NurseDetails");
       }
+
+
+
 }
 
 
