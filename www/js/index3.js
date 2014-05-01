@@ -46,66 +46,37 @@ var app = {
 
         console.log('Received Event: ' + id);
     },
-
 showNurseDetails: function(nurse_id) {
-    $.mobile.changePage($("#NurseDetails"));
+$.mobile.changePage($("#NurseDetails"));
 // We need to find the right entry in the nurse list, so iterate over
 // the nurse list until we find the provided ID, if we find a match set
 // nurse_to_show
-    var nurse_to_show
-      for (index = 0; index < app.nurseData.length; ++index) {
-        if ( app.nurseData[index].id == nurse_id ) {
-          nurse_to_show = app.nurseData[index]
-          }
-        }
-      if ( nurse_to_show != null ) {
-          $("#NurseDetailsHeader").html(nurse_to_show.surname+", "+nurse_to_show.forename);
-          $("#NurseDetailsContent").html("Grade "+nurse_to_show.grade);
-        }
-    },
-
-updateNurseList: function() {
-
-//  var nurseData;
-  $.ajax ({
-    dataType: "html", 
-// note that apache seems to serve the json file up as raw html – not the correct mime type.
-    url: "http://localhost/~student/IMATutorial3a/www/nursesListing.json",
-    success: function (data) {
-      app.nurseData = $.parseJSON(data); // convert the received response to a JSON object
-      alert ("got the data successfully");
-      for (index = 0; index < app.nurseData.length; ++index) {
-         $("#NurseList").append (
-             "<li onClick=\"javascript:app.showNurseDetails("+ app.nurseData[index].id + ");\"> " +app.nurseData[index].forename +", " + app.nurseData[index].surname + 
-
-"</li>");
-         }
-
-      }
-   });
-   alert ("CREATED THE LIST");
-
-    $("#NurseList").listview ("refresh");
-
+var nurse_to_show
+for (index = 0; index < app.nurse_data.length; ++index) {
+if ( app.nurse_data[index].id == nurse_id ) {
+nurse_to_show = app.nurse_data[index]
 }
+}
+if ( nurse_to_show != null ) {
+$("#NurseDetailsHeader").html(nurse_to_show.surname+", "+nurse_to_show.forename);
+$("#NurseDetailsContent").html("Grade "+nurse_to_show.grade);
+}
+},
 
-
-
-//$.getJSON ("http://ianibbo.me/listNurses.json",
-
-//function (data) {
+updateNurseList: function() {$.getJSON ("http://ianibbo.me/listNurses.json",
+function (data) {
 // Store the data we have loaded for later use.
-//app.nurse_data=data;
-//for (index = 0; index < data.length; ++index) {
+app.nurse_data=data;
+for (index = 0; index < data.length; ++index) {
 // Maybe you could subnavigate the specialisms
 // list here and add a "tag" for each specialism
-//$("#NurseList").append ("<li "+
-//"onClick=\"javascript:app.showNurseDetails('"+data[index].id+"');\">"+
-//"<h3>"+ data[index].forename+", "+data[index].surname+"</h3><p>Grade"+data[index].grade+
-//"</p></li>");
-//}
-//$("#NurseList").listview ("refresh");
-//}
-//);
-//}
+$("#NurseList").append ("<li "+
+"onClick=\"javascript:app.showNurseDetails('"+data[index].id+"');\">"+
+"<h3>"+ data[index].forename+", "+data[index].surname+"</h3><p>Grade"+data[index].grade+
+"</p></li>");
+}
+$("#NurseList").listview ("refresh");
+}
+);
+}
 }
